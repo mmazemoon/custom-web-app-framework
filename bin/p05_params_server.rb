@@ -47,6 +47,10 @@ class CatsController < Phase5::ControllerBase
     render :index
   end
 
+  def render(template_name)
+    super
+  end
+
   def new
     @cat = Cat.new
     render :new
