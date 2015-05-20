@@ -13,7 +13,6 @@ module Phase4
       else
         @cookie = JSON.parse(query.value)   # parse into ruby hash
       end
-      store_session(@cookie)
     end
 
     def [](key)
@@ -26,8 +25,10 @@ module Phase4
 
     # serialize the hash into json and save in a cookie
     # add to the responses cookies
+    # adds a cookie to the response (it had location & status before from redirect)
     def store_session(res)
-      res.cookies << WEBrick::Cookie.new("_rails_lite_app", @cookie.to_json)
+      baked = WEBrick::Cookie.new("_rails_lite_app", @cookie.to_json)
+      res.cookies << baked
     end
   end
 end
