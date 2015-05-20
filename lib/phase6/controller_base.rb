@@ -10,11 +10,3 @@ module Phase6
     end
   end
 end
-
-=begin
-
-Add a method ControllerBase#invoke_action(action_name)
-use send to call the appropriate action (like index or show)
-check to see if a template was rendered; if not call render in invoke_action.
-
-=end
