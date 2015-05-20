@@ -11,6 +11,7 @@ module Phase4
 
     # method exposing a `Session` object
     def session
+      Session.new(@req)
     end
   end
 end
