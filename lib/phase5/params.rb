@@ -33,18 +33,30 @@ module Phase5
     # should return
     # { "user" => { "address" => { "street" => "main", "zip" => "89436" } } }
     def parse_www_encoded_form(www_encoded_form)
-      query_array = decode_www_form(www_encode_form) # => returns an array of [k, v] pairs  [[‘a’, ‘1’], [‘a’, ‘2’], [‘b’, ‘3’]]
-      query_array.each do |pair|
-        key, val = pair[0], pair[1]
-        @params[key] = val
+      decoded_array = decode_www_form(www_encode_form) # => returns an array of [ k[k][k][k], v]  pairs  [[‘a’, ‘1’], [‘a’, ‘2’], [‘b’, ‘3’]]
+      @params
+      decoded_array.each do |pair|
+        keys = parse_key(pair[0])
+        val = pair[1]
+        current = @params
+        keys.each.with_index do |key, i|
+          if i == keys.length - 1
+              current[key] = val
+          else
+            current[key] ||= { }
+            current = current[key]
+          end
+        end
       end
+      @params
     end
 
     # this should return an array
     # user[address][street] should return ['user', 'address', 'street']
     def parse_key(key)
-
+      key.split(/\]\[|\[|\]/)
     end
+
   end
 end
 
