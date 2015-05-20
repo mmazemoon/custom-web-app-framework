@@ -17,8 +17,8 @@ module Phase6
 
 
     def run(req, res)
-      @controller = controller_class.new(req, res)
-      @controller.invoke_action(action_name)
+      controller = controller_class.new(req, res)
+      controller.invoke_action(action_name)
     end
   end
 
@@ -49,13 +49,13 @@ module Phase6
 
     # should return the route that matches this request
     def match(req)
+      @routes.find{ |route| route.matches?(req) }
     end
-
-
 
     # either throw 404 or call run on a matched route
     def run(req, res)
-
+      res.status= 404 if match(req).nil?
+      match(req).run(req, res)
     end
   end
 end
