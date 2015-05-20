@@ -12,12 +12,12 @@ module Phase5
     # passed in as a hash to `Params.new` as below:
     def initialize(req, route_params = {})
       @params = route_params
-        parse_www_encoded_form(req.query_string)
-        parse_www_encoded_form(req.body)
+        parse_www_encoded_form(req.query_string) if req.query_string
+        parse_www_encoded_form(req.body) if req.body
     end
 
     def [](key)
-      @params[key.to_sym]
+      @params[key.to_s]
     end
 
     def to_s
@@ -33,7 +33,7 @@ module Phase5
     # should return
     # { "user" => { "address" => { "street" => "main", "zip" => "89436" } } }
     def parse_www_encoded_form(www_encoded_form)
-      decoded_array = decode_www_form(www_encode_form) # => returns an array of [ k[k][k][k], v]  pairs  [[‘a’, ‘1’], [‘a’, ‘2’], [‘b’, ‘3’]]
+      decoded_array = URI.decode_www_form(www_encoded_form) # => returns an array of [ k[k][k][k], v]  pairs  [[‘a’, ‘1’], [‘a’, ‘2’], [‘b’, ‘3’]]
       @params
       decoded_array.each do |pair|
         keys = parse_key(pair[0])
