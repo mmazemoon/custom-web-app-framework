@@ -2,6 +2,7 @@ require 'uri'
 
 module Phase5
   class Params
+    # gives our params hash functionality.
     # use your initialize to merge params from
     # 1. query string
     # 2. post body
@@ -15,6 +16,7 @@ module Phase5
     end
 
     def [](key)
+      @params[key.to_sym]
     end
 
     def to_s
