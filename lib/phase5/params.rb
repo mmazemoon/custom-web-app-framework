@@ -48,6 +48,7 @@ module Phase5
           end
         end
       end
+
       @params
     end
 

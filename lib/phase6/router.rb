@@ -1,3 +1,5 @@
+require_relative "controller_base"
+
 module Phase6
   class Route
     attr_reader :pattern, :http_method, :controller_class, :action_name
@@ -17,6 +19,9 @@ module Phase6
 
 
     def run(req, res)
+      match_data = @pattern.match(req.path)
+      route_params = Hash[match_data.names.zip(match_data.captures)]
+      
       controller = controller_class.new(req, res)
       controller.invoke_action(action_name)
     end
@@ -54,8 +59,11 @@ module Phase6
 
     # either throw 404 or call run on a matched route
     def run(req, res)
-      res.status= 404 if match(req).nil?
-      match(req).run(req, res)
+      if match(req).nil?
+        res.status= 404
+      else
+        match(req).run(req, res)
+      end
     end
   end
 end
